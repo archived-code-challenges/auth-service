@@ -1,0 +1,565 @@
+{
+	"info": {
+		"_postman_id": "23b5a4f5-2cc8-4f67-8496-aecec91cc315",
+		"name": "golang-authetication-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "authentication",
+			"item": [
+				{
+					"name": "(credentials) /oauth/login/",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Setting refresh_token variable parsing response\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set(\"response_refresh_token\", jsonData.refresh_token);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "api-client@test.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "secret01234",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{server}}/oauth/login/",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"oauth",
+								"login",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "(credentials) /oauth/login/",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "api-client@test.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "secret01234",
+											"type": "text"
+										},
+										{
+											"key": "grant_type",
+											"value": "password",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{server}}/oauth/login/",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"oauth",
+										"login",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 08 Apr 2021 14:38:42 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "460"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"access_token\": \"eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTc5MTQzMjIsImlzcyI6ImdvYXV0aHN2YyIsInN1YiI6IjEifQ.5He0ME24EecWQTZuO6J3zm8RuXRmscUUrZPlrZL_cleeL7cGBlFVk9fDbD-Tvt31Dax9IPtuRpYJ2uFHTgy3nw\",\n    \"refresh_token\": \"eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTg3NTY3MjIsImlzcyI6ImdvYXV0aHN2Y3JlZnJlc2giLCJzdWIiOiIxIn0.VhUaoMHzUCx92evxpGvMkWjtCN-9H84fcZmRBUGCJdQvvxlTt65b5396EXR5GUmLeg-rNbHeY1Dp-h0u5_9nhA\",\n    \"expires_in\": 21600,\n    \"token_type\": \"bearer\"\n}"
+						}
+					]
+				},
+				{
+					"name": "(refresh token) /oauth/login/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Setting refresh_token variable parsing response\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set(\"response_refresh_token\", jsonData.refresh_token);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "refresh_token",
+									"value": "{{response_refresh_token}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "refresh_token",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{server}}/oauth/login/",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"oauth",
+								"login",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "(refresh token) /oauth/login/",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "refresh_token",
+											"value": "{{response_refresh_token}}",
+											"type": "text"
+										},
+										{
+											"key": "grant_type",
+											"value": "refresh_token",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{server}}/oauth/login/",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"oauth",
+										"login",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 08 Apr 2021 15:08:12 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "460"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"access_token\": \"eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTc5MTYwOTIsImlzcyI6ImdvYXV0aHN2YyIsInN1YiI6IjEifQ.T9sJr4of-GXvtnb_ag8lJIkp68bu7_oza4m4pH6QkE44GqjSvRG3faHyLASl3drpvOKTCByqk-jcuz_hJdJwpw\",\n    \"refresh_token\": \"eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTg3NTg0OTIsImlzcyI6ImdvYXV0aHN2Y3JlZnJlc2giLCJzdWIiOiIxIn0.dBZ-kZfzoquqhv-X_ZDP4wPjZHq7YI8Krz-T0iKkIXiQX5AeV_gYO0xqwVQoGWlZ17QpGH1quTJUIjzHX2Lt5g\",\n    \"expires_in\": 21600,\n    \"token_type\": \"bearer\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "/api/users/",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"api-client@test.com\",\n  \"password\": \"secret01234\",\n  \"firstName\": \"fname\",\n  \"lastName\": \"lname\",\n  \"nickname\": \"nickname\",\n  \"country\": \"country123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/api/users/",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/users/:id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"api-client@test.com\",\n  \"password\": \"secret01234\",\n  \"firstName\": \"fname-modified\",\n  \"lastName\": \"lname-modified\",\n  \"nickname\": \"nickname-modified\",\n  \"country\": \"country123-modified\",\n  \"active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/api/users/1",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/users/:id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"api-client@test.com\",\n  \"password\": \"secret01234\",\n  \"first_name\": \"fname\",\n  \"last_name\": \"fname\",\n  \"nickname\": \"nickname\",\n  \"country\": \"country123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/api/users/1",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/users/?id=:id:id...",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"api-client@test.com\",\n  \"password\": \"secret01234\",\n  \"first_name\": \"fname\",\n  \"last_name\": \"fname\",\n  \"nickname\": \"nickname\",\n  \"country\": \"country123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/api/users/?id=1,2",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1,2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/users/?country=:country:country...",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"api-client@test.com\",\n  \"password\": \"secret01234\",\n  \"first_name\": \"fname\",\n  \"last_name\": \"fname\",\n  \"nickname\": \"nickname\",\n  \"country\": \"country123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/api/users/?country=country123",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								""
+							],
+							"query": [
+								{
+									"key": "country",
+									"value": "country123"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/users/",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"api-client@test.com\",\n  \"password\": \"secret01234\",\n  \"first_name\": \"fname\",\n  \"last_name\": \"fname\",\n  \"nickname\": \"nickname\",\n  \"country\": \"country123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/api/users/",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "(must be owner) /api/users/:id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{response_refresh_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/api/users/2",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "/api/health/",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}",
+					"host": [
+						"{{server}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "d288fdb1-8d62-4fb4-a532-2dcade1a8f9a",
+			"key": "hostname",
+			"value": "localhost"
+		},
+		{
+			"id": "ac000159-c51f-4168-b803-5fbdc2f5f2eb",
+			"key": "port",
+			"value": "8080"
+		},
+		{
+			"id": "a05df32e-0d47-45f5-81a8-c384cad17410",
+			"key": "protocol",
+			"value": "http"
+		},
+		{
+			"id": "9849ee35-1068-4851-9c28-a271dbb925ee",
+			"key": "server",
+			"value": "{{protocol}}://{{hostname}}:{{port}}"
+		},
+		{
+			"id": "fcf21729-9b2d-4510-8e74-c119e3f99968",
+			"key": "refresh_token",
+			"value": ""
+		},
+		{
+			"id": "f6a484a3-9765-4d47-9029-cc4791093354",
+			"key": "response_refresh_token",
+			"value": ""
+		}
+	]
+}
