@@ -1,0 +1,50 @@
+version: '3'
+
+networks:
+  shared-network:
+    driver: bridge
+
+services:
+
+  goauthsvc:
+      container_name: goauthsvc
+      build:
+        context: .
+        dockerfile: ./Dockerfile
+      image: goauthsvc:latest # If you specify image as well as build, then, docker-compose names
+      # the built image with the webapp and optional tag specified in image
+      ports:
+        - 8080:8080
+        - 6060:6060
+      depends_on:
+        - zipkin
+        - postgres
+      networks:
+        - shared-network
+
+  # This sidecar allows for the viewing of traces.
+  zipkin:
+    container_name: zipkin
+    image: openzipkin/zipkin:2
+    ports:
+      - 9411:9411
+    networks:
+      - shared-network
+
+  postgres:
+    container_name: postgres
+    image: postgres:13.2-alpine
+    environment:
+      - POSTGRES_USER=goauthsvc
+      - POSTGRES_PASSWORD=secret1234
+      - PGDATA=/var/lib/postgresql/data
+      - POSTGRES_DB=goauthsvc
+    ports:
+      - 5432:5432
+    volumes:
+      - fd_pg_data:/var/lib/postgresql/data
+    networks:
+      - shared-network
+
+volumes:
+  fd_pg_data:
