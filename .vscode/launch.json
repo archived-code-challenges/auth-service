@@ -1,0 +1,15 @@
+{
+    // Configuration file used to set debug modes that can be triggered
+    // from the RUN tab of visual studio code.
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run: API :8080",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/cmd/api/", // path to main API start file
+            "cwd": "${workspaceFolder}" // dynamic working directory
+        }
+    ]
+}

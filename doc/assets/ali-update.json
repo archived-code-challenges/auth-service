@@ -1,0 +1,9 @@
+{
+    "id": 1,
+    "active": true,
+    "email": "api-client@test.com",
+    "firstName": "fname-modified",
+    "lastName": "lname-modified",
+    "nickname": "nickname-modified",
+    "country": "country123-modified"
+}
