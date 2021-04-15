@@ -28,8 +28,7 @@ const (
 	tokenClaimsIssuerRefresh = "goauthsvcrefresh"
 )
 
-// UserService defines a set of methods to be used when dealing with system users
-// and authenticating them.
+// UserService defines a set of methods to be used when dealing with system users and authenticating them.
 type UserService interface {
 	// Authenticate returns a user based on provided username and password.
 	//
@@ -53,26 +52,17 @@ type UserService interface {
 
 // UserDB defines how the service interacts with the database.
 type UserDB interface {
-	// Create adds a user to the system. For common users, the
-	// Email, FirstName and Password are mandatory. For
-	// application users, only FirstName and RoleID are mandatory.
-	// The parameter u will be modified with normalised and validated
-	// values and ID will be set to the new user ID.
+	// Create adds a user to the system. For common users, the Email, FirstName and Password are mandatory.
+	// The parameter u will be modified with normalised and validated values and ID will be set to the new user ID.
 	//
-	// Use NewUser() to use appropriate default values for the other
-	// fields.
+	// Use NewUser() to use appropriate default values for the other fields.
 	//
 	// For application users, email and password will be generated.
 	Create(context.Context, *User) error
 
-	// Update updates a user in the system. For common users, the
-	// Email, FirstName and Password are mandatory. For
-	// application users, only FirstName and RoleID are mandatory.
+	// Update updates a user in the system. For common users, the Email, FirstName and Password are mandatory.
 	// The parameter u will be modified with normalised and validated
 	// values.
-	//
-	// Use NewUser() to use appropriate default values for the other
-	// fields.
 	//
 	// For application users, email and password cannot be updated.
 	Update(context.Context, *User) error
@@ -83,16 +73,14 @@ type UserDB interface {
 	// ByID retrieves a user by ID.
 	ByID(context.Context, int64) (User, error)
 
-	// ByIDs retrieves a list of users by their IDs. If
-	// no ID is supplied, all users in the database are returned.
+	// ByIDs retrieves a list of users by their IDs. If no ID is supplied, all users in the database are returned.
 	ByIDs(context.Context, ...int64) ([]User, error)
 
 	// ByIDs retrieves a list of users by countries. If no country is is supplied
 	// all users in the database are returned.
 	ByCountries(context.Context, ...string) ([]User, error)
 
-	// ByEmail retrieves a user by email address, as it
-	// is unique in the database.
+	// ByEmail retrieves a user by email address, as it is unique in the database.
 	ByEmail(context.Context, string) (User, error)
 }
 
@@ -101,33 +89,28 @@ type UserDB interface {
 type User struct {
 	ID int64 `gorm:"primary_key;type:bigserial" json:"id"`
 
-	// Active marks if the user is active in the system or
-	// disabled. Inactive users are not able to login or
-	// use the system.
+	// Active marks if the user is active in the system or disabled.
+	// Inactive users are not able to login or use the system.
 	Active bool `gorm:"not null" json:"active"`
 
-	// Email is the actual user identifier in the system
-	// and must be unique.
+	// Email is the actual user identifier in the system and must be unique.
 	Email string `gorm:"unique;size:255;not null" json:"email"`
 
-	// FirstName is the user's first name or an application user's
-	// description.
+	// FirstName is the user's first name or an application user's description.
 	FirstName string `gorm:"size:255;not null" json:"firstName"`
 
-	// LastName is the user's last name or last names, and it may
-	// be left blank.
+	// LastName is the user's last name or last names, and it may be left blank.
 	LastName string `gorm:"size:255;not null" json:"lastName"`
 
-	// Password stores the hashed user's password. This value
-	// is always cleared when the services return a new user.
+	// Password stores the hashed user's password.
+	// This value is always cleared when the services return a new user.
 	Password string `gorm:"size:255;not null" json:"password,omitempty"`
 
 	Nickname string `gorm:"size:255;not null" json:"nickname"`
 	Country  string `gorm:"size:255;not null" json:"country"`
 
-	// Settings is used by the frontend to store free-form
-	// contents related to user preferences.
-	Settings string `gorm:"type:text;not null" json:"settings,omitempty"` // settings information related to a user.
+	// Settings is used by the frontend to store free-form contents related to user preferences.
+	Settings string `gorm:"type:text;not null" json:"settings,omitempty"`
 }
 
 // NewUser creates a new User value with default field values applied.
@@ -145,13 +128,6 @@ type Token struct {
 	TokenType    string `json:"token_type"`
 }
 
-// ValidationResult contains the result of a token validation request.
-type ValidationResult struct {
-	UserID    int64
-	RoleID    int64
-	IsRefresh bool
-}
-
 type authClaims struct {
 	jwt.Claims
 }
@@ -163,8 +139,7 @@ type userService struct {
 	secret []byte
 }
 
-// NewUserService instantiates a new UserService implementation with db as the
-// backing database.
+// NewUserService instantiates a new UserService implementation with db as the backing database.
 func NewUserService(db *gorm.DB, jwtSecret []byte) UserService {
 	sig, err := jwtjose.NewSigner(jwtjose.SigningKey{
 		Algorithm: jwtjose.HS512,
@@ -205,7 +180,7 @@ func (us *userService) Authenticate(ctx context.Context, username, password stri
 			err = ErrUnauthorised
 		}
 
-		// protection sleep to reduce effectiveness of BF attacks
+		// sleep protection to reduce effectiveness of BF attacks
 		time.Sleep(waitAfterAuthError)
 		return User{}, err
 	}
@@ -367,7 +342,7 @@ func (us *userService) ByEmail(ctx context.Context, e string) (User, error) {
 }
 
 // tokenValidate validates token as a JWT. If refresh is true, it validates it as being a
-// refresh token. The method returns the user id and role id present in the token claims
+// refresh token. The method returns the user id present in the token claims
 func (us *userService) tokenValidate(ctx context.Context, token string, isRefresh bool) (uid int64, err error) {
 	_, span := trace.StartSpan(ctx, "models.User.tokenValidate")
 	defer span.End()

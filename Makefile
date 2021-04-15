@@ -21,7 +21,7 @@ go-doc: ## Generates static docs
 	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) godoc -http=localhost:6060
 
 go-vendor: ## Updates vendor dependencies
-	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go get ./... && go mod tidy && go mod vendor
+	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go mod vendor && go mod tidy
 
 test: ## Runs the tests
 	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go test ./...

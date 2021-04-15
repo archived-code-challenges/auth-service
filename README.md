@@ -1,10 +1,10 @@
 # Golang authentication service
 
-Thank you for giving me the opportunity to participate in the selection process, it has been a very enjoyable test.
+Thank you for allowing me to participate in the selection process, it has been a very enjoyable test.
 
 ## Technical decisions
 
-- I have limitted authentication and is only used when **removing** a User resource. The middlewares will check if a user is authenticated and is removing resource of its own. Therefore, in order to remove a user through the API, you must authenticate with its credentials beforehand.
+- I have limited authentication and is only used when **removing** a User resource. The middlewares will check if a user is authenticated and is removing resource of its own. Therefore, to remove a user through the API, you must authenticate with its credentials beforehand.
 
 ### External dependencies
 
@@ -13,10 +13,10 @@ Thank you for giving me the opportunity to participate in the selection process,
 
 ## Possible extensions or improvements
 
-- When deploying to production, I would like to know if the number of requests for the service is very large, perhaps the trace service can slow down performance.
-- I would extend authentication to use roles, in order to allow users to have specific permissions.
+- When deploying to production, I would like to know if the number of requests for the service is very large, perhaps the tracing service can slow down performance.
+- I would extend authentication to use roles, to allow users to have specific permissions.
 - I have been used the attributes active and settings as a good practice but they are not completely functional and with some more time I would extend their functionality.
-- There are some things that have not been tested, the functionality is (overall) correct but with a little more time I would have ensured 90%+ coverage.
+- Some things have not been tested, the functionality is (overall) correct but with a little more time I would have ensured 90%+ coverage.
 - The migration method could be extended to use previous states of the database.
 
 ### Data structure
@@ -85,11 +85,11 @@ A **User** resource represents a user of the system.
 
 ## Instructions to run the project
 
-If the host operating system is macOS:
+If the host operating system is MacOS:
 
     make compose-mac
 
-If it is linux:
+If it is Linux:
 
     make compose-linux
 
@@ -97,7 +97,7 @@ On a first startup, the database should be initialised by running
 
     go run ./cmd/admin/main.go migrate
 
-After a successful execution, the service should be running on port 8080:
+After successful execution, the service should be running on port 8080:
 
 - [:8080](http://localhost:8080/)
 
@@ -107,6 +107,14 @@ Tracing can be found at:
 - [:6060/debug/pprof/](http://localhost:6060/debug/pprof/)
 
 ![image-tracing-support](/doc/assets/tracing-support.png)
+
+Project tests can be run by typing:
+
+    make test
+
+To explore what you can do with the Makefile:
+
+    make
 
 ## API usage
 
@@ -128,17 +136,17 @@ The project has a [Postman collection](/doc/golang-authetication-service.postman
 
 ### Benchmarking
 
-I have benchmarked the two most computationally-expensive points of the API: The PUT method and authentication.
+I have benchmarked the two most computationally expensive points of the API: The PUT method and authentication.
 Here are the results:
 
     ali --body-file=./doc/assets/ali-update.json --method=PUT http://localhost:8080/api/users/1
 
 ![bench-put-user.gif](/doc/assets/bench-put-user.gif)
-> Benchmark: 50 requests per second. Max: 120~ ms
+> Benchmark: **50** requests per second. Min: 12~ ms. Max: 120~ ms.
 
 ---
 
     ali --rate=10 --method=POST http://localhost:8080/oauth/login/bench/
 
 ![bench-auth.gif](/doc/assets/bench-auth.gif)
-> Benchmark: 10 requests per second. Max: 728~ ms
+> Benchmark: **10** requests per second. Min: 370~ ms. Max: 730~ ms.
