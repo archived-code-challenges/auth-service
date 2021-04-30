@@ -1,6 +1,8 @@
+<img src="https://img.shields.io/badge/status-development-yellowgreen"/></a>
+
 # Golang authentication service
 
-Thank you for allowing me to participate in the selection process, it has been a very enjoyable test.
+Small microservice to manage access to Users
 
 ## Technical decisions
 
